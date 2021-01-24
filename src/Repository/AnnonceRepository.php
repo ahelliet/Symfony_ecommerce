@@ -19,6 +19,31 @@ class AnnonceRepository extends ServiceEntityRepository
         parent::__construct($registry, Annonce::class);
     }
 
+    /**
+     * Formulaire de recherche des annonces
+     *
+     * @return void
+     */
+    public function SearchAnnonces($searchValue = null, $category = null)
+    {
+        $query = $this->createQueryBuilder('a');
+        // Si le champ de recherche n'est pas null
+        if ($searchValue != null) {
+            $query->andWhere('MATCH_AGAINST(a.title, a.content) AGAINST (:searchValue boolean)>0')
+                // On fait une recherche approximative 
+                ->setParameter('searchValue', '*' . $searchValue . '*');
+        }
+
+        // Si une catégorie a été selectionnée
+        if ($category != null) {
+            $query->leftJoin('a.category', 'c');
+            $query->andWhere('c.id = :id')
+                ->setParameter('id', $category);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Annonce[] Returns an array of Annonce objects
     //  */

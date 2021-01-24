@@ -60,7 +60,7 @@ class AnnonceController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush();
 
-            return $this->redirectToRoute('annonces_index');
+            return $this->redirectToRoute('annonce_index');
         }
 
         return $this->render('annonce/new.html.twig', [
@@ -112,7 +112,7 @@ class AnnonceController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush();
 
-            return $this->redirectToRoute('annonces_index');
+            return $this->redirectToRoute('annonce_index');
         }
 
         return $this->render('annonce/edit.html.twig', [
@@ -132,6 +132,6 @@ class AnnonceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('annonces_index');
+        return $this->redirectToRoute('annonce_index');
     }
 }
