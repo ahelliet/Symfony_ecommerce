@@ -43,9 +43,20 @@ class User implements UserInterface
      */
     private $annonces;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Enchere::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $encheres;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->encheres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,7 +83,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -150,6 +161,43 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($annonce->getUser() === $this) {
                 $annonce->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Enchere[]
+     */
+    public function getEncheres(): Collection
+    {
+        return $this->encheres;
+    }
+
+    public function addEnchere(Enchere $enchere): self
+    {
+        if (!$this->encheres->contains($enchere)) {
+            $this->encheres[] = $enchere;
+            $enchere->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnchere(Enchere $enchere): self
+    {
+        if ($this->encheres->removeElement($enchere)) {
+            // set the owning side to null (unless already changed)
+            if ($enchere->getUser() === $this) {
+                $enchere->setUser(null);
             }
         }
 

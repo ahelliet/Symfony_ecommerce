@@ -24,15 +24,15 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setRoles(['ROLE_USER'])
+                ->setUsername($user->getUsername())
             // encode the plain password
-            $user->setPassword(
+                ->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
-                )
-            )
-                ->setRoles(['ROLE_USER']);
-
+                ));
+                
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

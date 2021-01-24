@@ -72,9 +72,15 @@ class Annonce
      */
     private $endAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Enchere::class, mappedBy="annonce", orphanRemoval=true)
+     */
+    private $encheres;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->encheres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +222,36 @@ class Annonce
     public function setEndAt(?\DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Enchere[]
+     */
+    public function getEncheres(): Collection
+    {
+        return $this->encheres;
+    }
+
+    public function addEnchere(Enchere $enchere): self
+    {
+        if (!$this->encheres->contains($enchere)) {
+            $this->encheres[] = $enchere;
+            $enchere->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnchere(Enchere $enchere): self
+    {
+        if ($this->encheres->removeElement($enchere)) {
+            // set the owning side to null (unless already changed)
+            if ($enchere->getAnnonce() === $this) {
+                $enchere->setAnnonce(null);
+            }
+        }
 
         return $this;
     }

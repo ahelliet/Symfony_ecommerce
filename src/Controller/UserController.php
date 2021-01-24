@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\AnnonceRepository;
+use App\Repository\EnchereRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,11 +36,12 @@ class UserController extends AbstractController
     /**
      * @Route("/encheres", name="app_user_encheres")
      */
-    public function mesEncheres(): Response
+    public function mesEncheres(EnchereRepository $enchereRepository): Response
     {
+        $user = $this->getUser();
         return $this->render('user/encheres.html.twig', [
             'controller_name' => 'UserController',
-            'encheres' => 'mes encheres'
+            'encheres' => $enchereRepository->findBy(['user'=> $user])
         ]);
     }
 }

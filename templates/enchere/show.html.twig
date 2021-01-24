@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Enchere{% endblock %}
+
+{% block body %}
+    <h1>Enchere</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ enchere.id }}</td>
+            </tr>
+            <tr>
+                <th>Auction_value</th>
+                <td>{{ enchere.auctionValue }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ enchere.createdAt ? enchere.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('enchere_index') }}">back to list</a>
+
+    <a href="{{ path('enchere_edit', {'id': enchere.id}) }}">edit</a>
+
+    {{ include('enchere/_delete_form.html.twig') }}
+{% endblock %}
