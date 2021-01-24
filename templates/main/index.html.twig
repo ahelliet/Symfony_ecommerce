@@ -7,11 +7,12 @@
 	{{form_start(form)}}
 	<div class="row">
 		<div class="col-10 offset-1 mt-4">
+
 			<div class="input-group">
 				<div class="input-group-prepend">
 					{{form_row(form.category, {
 						'attr': {																																																			
-							'class':'form-control custom-select',
+							'class':'custom-select',
 							'required':false
 					}})}}
 				</div>
@@ -19,7 +20,7 @@
 				{{form_row(form.searchValue, {
 						'label':false,
 						'attr': {
-							'class':'form-control',
+							'class': 'form-control',
 							'placeholder': 'De quoi avez-vous besoin ?',
 							'required': false
 					}})}}
@@ -29,6 +30,7 @@
 				</div>
 
 			</div>
+
 		</div>
 	</div>
 	{{form_end(form)}}
