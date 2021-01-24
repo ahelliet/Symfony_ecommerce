@@ -41,6 +41,37 @@ class Annonce
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="annonces")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price_start_auction;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price_auction_preserve;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $endAt;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -113,6 +144,78 @@ class Annonce
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getPriceStartAuction(): ?float
+    {
+        return $this->price_start_auction;
+    }
+
+    public function setPriceStartAuction(?float $price_start_auction): self
+    {
+        $this->price_start_auction = $price_start_auction;
+
+        return $this;
+    }
+
+    public function getPriceAuctionPreserve(): ?float
+    {
+        return $this->price_auction_preserve;
+    }
+
+    public function setPriceAuctionPreserve(?float $price_auction_preserve): self
+    {
+        $this->price_auction_preserve = $price_auction_preserve;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTimeInterface $endAt): self
+    {
+        $this->endAt = $endAt;
 
         return $this;
     }

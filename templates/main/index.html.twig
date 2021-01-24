@@ -5,9 +5,38 @@
 
 {% block body %}
 	{{form_start(form)}}
-	{{form_end(form)}}
+	<div class="row">
+		<div class="col-10 offset-1 mt-4">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					{{form_row(form.category, {
+						'attr': {																																																			
+							'class':'form-control custom-select',
+							'required':false
+					}})}}
+				</div>
 
-	<pre>
-        {{ dump(annonces) }}
-    </pre>
+				{{form_row(form.searchValue, {
+						'label':false,
+						'attr': {
+							'class':'form-control',
+							'placeholder': 'De quoi avez-vous besoin ?',
+							'required': false
+					}})}}
+
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary form-control" type="button">Rechercher</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	{{form_end(form)}}
+	{% for annonce in annonces %}
+		<ul>
+			<li>{{annonce.id}}|
+				{{annonce.title}}|
+				{{annonce.content}}</li>
+		</ul>
+	{% endfor %}
 {% endblock %}

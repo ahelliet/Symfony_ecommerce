@@ -21,6 +21,11 @@ class AnnonceType extends AbstractType
             ])
             ->add('title')
             ->add('content')
+            ->add('price')
+            ->add('price_start_auction')
+            ->add('price_auction_preserve')
+            ->add('createdAt')
+            ->add('endAt')
             ->add('images', FileType::class, [
                 'label' => false,
                 'multiple' => true,

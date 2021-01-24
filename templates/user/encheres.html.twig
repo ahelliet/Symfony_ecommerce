@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!
+{% endblock %}
+
+{% block body %}
+	{% for annonce in app.user.annonces %}
+		{{dump(encheres)}}
+	{% endfor %}
+{% endblock %}

@@ -31,7 +31,7 @@ class AnnonceRepository extends ServiceEntityRepository
         if ($searchValue != null) {
             $query->andWhere('MATCH_AGAINST(a.title, a.content) AGAINST (:searchValue boolean)>0')
                 // On fait une recherche approximative 
-                ->setParameter('searchValue', '*' . $searchValue . '*');
+                ->setParameter('searchValue', $searchValue);
         }
 
         // Si une catégorie a été selectionnée

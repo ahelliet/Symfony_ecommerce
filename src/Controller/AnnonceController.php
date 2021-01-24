@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Annonce;
 use App\Form\AnnonceType;
@@ -9,6 +10,7 @@ use App\Repository\AnnonceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -32,8 +34,12 @@ class AnnonceController extends AbstractController
     public function new(Request $request): Response
     {
         $annonce = new Annonce();
+        $user = $this->getUser();
+        $annonce->setUser($user);
+
         $form = $this->createForm(AnnonceType::class, $annonce);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             // On récupère les images transmises
@@ -86,6 +92,8 @@ class AnnonceController extends AbstractController
     {
         $form = $this->createForm(AnnonceType::class, $annonce);
         $form->handleRequest($request);
+        $user = $this->getUser();
+        $annonce->setUser($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // On récupère les images transmises
@@ -133,5 +141,31 @@ class AnnonceController extends AbstractController
         }
 
         return $this->redirectToRoute('annonce_index');
+    }
+
+    /**
+     * @Route("/delete/image/{id}", name="annonces_delete_image", methods={"DELETE"})
+     */
+    public function deleteImage(Image $image, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        // On vérifie si le token est valide
+        if ($this->isCsrfTokenValid('delete' . $image->getId(), $data['_token'])) {
+            // On récupère le nom de l'image
+            $nom = $image->getName();
+            // On supprime le fichier
+            unlink($this->getParameter('images_directory') . '/' . $nom);
+
+            // On supprime l'entrée de la base
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
+        } else {
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
     }
 }

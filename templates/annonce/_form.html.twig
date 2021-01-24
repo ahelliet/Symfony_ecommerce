@@ -2,6 +2,22 @@
 {{form_row(form.category)}}
 {{form_row(form.title)}}
 {{form_row(form.content)}}
+{{form_row(form.price)}}
+{{form_row(form.price_start_auction)}}
+{{form_row(form.price_auction_preserve)}}
+{{form_row(form.createdAt)}}
+{{form_row(form.endAt)}}
 {{form_row(form.images)}}
+{# Si la route est "annonce_edit on affiche les images #}
+{% if app.request.attributes.get('_route') == 'annonce_edit' %}
+	{% for image in annonce.images %}
+		<div>
+			<img
+			src="{{ asset('/uploads/'~image.name) }}" alt="" width="150">
+			{# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
+			<a href="{{ path('annonces_delete_image', {id: image.id})}}" data-delete data-token="{{ csrf_token('delete' ~ image.id )}}">Supprimer</a>
+		</div>
+	{% endfor %}
+{% endif %}
 <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
