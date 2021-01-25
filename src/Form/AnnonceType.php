@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class AnnonceType extends AbstractType
 {
@@ -24,8 +25,12 @@ class AnnonceType extends AbstractType
             ->add('price')
             ->add('price_start_auction')
             ->add('price_auction_preserve')
-            ->add('createdAt')
-            ->add('endAt')
+            ->add('createdAt', DateTimeType::class, [
+                'date_label' => 'L\'enchère débute le',
+            ])
+            ->add('endAt', DateTimeType::class, [
+                'date_label' => 'Et se termine le',
+            ])
             ->add('images', FileType::class, [
                 'label' => false,
                 'multiple' => true,

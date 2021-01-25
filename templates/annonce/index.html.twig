@@ -22,8 +22,18 @@
 					<td>{{ annonce.title }}</td>
 					<td>{{ annonce.content }}</td>
 					<td>
-						<a href="{{ path('annonce_show', {'id': annonce.id}) }}">show</a>
-						<a href="{{ path('annonce_edit', {'id': annonce.id}) }}">edit</a>
+					<a href="{{ path('annonce_show', {'id': annonce.id}) }}">En savoir plus</a>
+							{% if app.user == annonce.getUser %}
+							<a href="{{ path('annonce_edit', {'id': annonce.id}) }}">Modifier l'annonce</a>
+							{% endif %}
+
+							{% if is_granted('ROLE_ADMIN')%}
+							<form>
+							<a href="{{ path('annonce_edit', {'id': annonce.id}) }}">Modifier l'annonce</a>
+							{{ include('annonce/_delete_form.html.twig') }}
+							<form>
+							{% endif %}
+						
 					</td>
 				</tr>
 			{% else %}

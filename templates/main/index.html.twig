@@ -11,18 +11,18 @@
 			<div class="input-group">
 				<div class="input-group-prepend">
 					{{form_row(form.category, {
+						'required': false,
 						'attr': {																																																			
-							'class':'custom-select',
-							'required':false
+							'class':'custom-select'
 					}})}}
 				</div>
 
 				{{form_row(form.searchValue, {
 						'label':false,
+						'required':false,
 						'attr': {
 							'class': 'form-control',
-							'placeholder': 'De quoi avez-vous besoin ?',
-							'required': false
+							'placeholder': 'De quoi avez-vous besoin ?'
 					}})}}
 
 				<div class="input-group-append">
@@ -36,9 +36,9 @@
 	{{form_end(form)}}
 	{% for annonce in annonces %}
 		<ul>
-			<li>{{annonce.id}}|
-				{{annonce.title}}|
-				{{annonce.content}}</li>
+			<li>Catégorie: {{annonce.getCategory.name}} ||
+				Titre: {{annonce.title}} ||
+				Description: {{annonce.content}} || <a href="{{path('annonce_show', {id: annonce.id})}}">Voir l'annonce</a></li>
 		</ul>
 	{% endfor %}
 {% endblock %}

@@ -1,13 +1,51 @@
 {{ form_start(form) }}
-{{form_row(form.category)}}
-{{form_row(form.title)}}
-{{form_row(form.content)}}
-{{form_row(form.price)}}
-{{form_row(form.price_start_auction)}}
-{{form_row(form.price_auction_preserve)}}
-{{form_row(form.createdAt)}}
-{{form_row(form.endAt)}}
-{{form_row(form.images)}}
+{{form_row(form.category, {
+		'label': false,
+		'placeholder': 'Choisir une catégorie',
+	'attr': {
+		'class': 'form-control'
+	}
+})}}
+{{form_row(form.title, {'label': 'Titre de votre annonce', 'attr': {
+	'class': 'form-control'
+}})}}
+{{form_row(form.content, {'label': 'Description', 'attr': {
+	'class': 'form-control'
+}})}}
+{{form_row(form.price, { 
+							'label': 'Prix de vente',
+						'attr': {
+							'placeholder': '20',
+							'class': 'form-control'
+						}})}}
+{{form_row(form.price_start_auction, {
+						'label':'Prix de départ',
+						'attr': {
+							'class': 'form-control',
+							'placeholder': '20',
+							'required': false
+					}})}}
+{{form_row(form.price_auction_preserve, {
+							'label': 'Prix de réserve',
+							'attr': {
+							'placeholder': '20',
+							'class': 'form-control',
+						}})}}
+{{form_row(form.createdAt, {'label':'Début de l\enchère',
+	'attr': {
+		'class': 'form-control'
+	}
+})}}
+{{form_row(form.endAt, {'label':'Fin de l\'enchère',
+	'attr': {
+		'class': 'form-control'
+	}
+})}}
+{{form_row(form.images, {
+	'attr': {
+		'class': 'form-control'
+	}
+})}}
 {# Si la route est "annonce_edit on affiche les images #}
 {% if app.request.attributes.get('_route') == 'annonce_edit' %}
 	{% for image in annonce.images %}
@@ -19,5 +57,5 @@
 		</div>
 	{% endfor %}
 {% endif %}
-<button class="btn">{{ button_label|default('Save') }}</button>
+<button class="btn btn-secondary">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}

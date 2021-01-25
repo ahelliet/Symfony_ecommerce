@@ -22,9 +22,57 @@
         </tbody>
     </table>
 
-    <a href="{{ path('annonce_index') }}">back to list</a>
+    {% if app.user is null %}
+        Vous devez être connecté pour pouvoir enchérir !
+        <fieldset disabled>
+        <input type="number" class="disabled" id="enchere_value" placeholder="ex : 25€">
+        <input type="submit" class="disabled" id="add_enchere" value="Enchérir">
+        </fieldset>
+    </form>
+    {% endif %}
 
-    <a href="{{ path('annonce_edit', {'id': annonce.id}) }}">edit</a>
+    {% if is_granted('ROLE_USER') %}
+    <form>
+        <input type="number" id="enchere_value" placeholder="ex : 25€">
+        <input type="submit" id="add_enchere" value="Enchérir">
+    </form>
+    {% endif %}
 
+    {% if app.user == annonce.getUser %}
+    <a href="{{ path('annonce_edit', {'id': annonce.id}) }}">Modifier l'annonce</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN')%}
+    <form>
+    <a href="{{ path('annonce_edit', {'id': annonce.id}) }}">Modifier l'annonce</a>
     {{ include('annonce/_delete_form.html.twig') }}
+    <form>
+    {% endif %}
+
+    <a href="{{ path('annonce_index') }}">Retour aux annonces</a>
+    
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+    $(function() {
+        $("#add_enchere").on("click", function(event){
+            console.log('ok');
+            event.preventDefault();
+            $.ajax({
+                url: '/enchere/new',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    annonce_id: {{annonce.id}},
+                    enchere_value: $("#enchere_value").val()
+                }
+            }).done(function (data) {
+                console.log(data);
+            });
+        });
+    })
+</script>
+{% endblock %}
+
+

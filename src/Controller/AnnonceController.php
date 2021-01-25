@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Annonce;
+use App\Entity\Enchere;
 use App\Form\AnnonceType;
+use App\Form\EnchereType;
 use App\Repository\AnnonceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -30,6 +33,7 @@ class AnnonceController extends AbstractController
 
     /**
      * @Route("/new", name="annonce_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function new(Request $request): Response
     {
@@ -78,15 +82,16 @@ class AnnonceController extends AbstractController
     /**
      * @Route("/{id}", name="annonce_show", methods={"GET"})
      */
-    public function show(Annonce $annonce): Response
+    public function show(Annonce $annonce, Request $request): Response
     {
         return $this->render('annonce/show.html.twig', [
-            'annonce' => $annonce,
+            'annonce' => $annonce
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="annonce_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER")
      */
     public function edit(Request $request, Annonce $annonce): Response
     {
@@ -125,12 +130,13 @@ class AnnonceController extends AbstractController
 
         return $this->render('annonce/edit.html.twig', [
             'annonce' => $annonce,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
     /**
      * @Route("/{id}", name="annonce_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Annonce $annonce): Response
     {
@@ -145,6 +151,7 @@ class AnnonceController extends AbstractController
 
     /**
      * @Route("/delete/image/{id}", name="annonces_delete_image", methods={"DELETE"})
+     * @IsGranted("ROLE_USER")
      */
     public function deleteImage(Image $image, Request $request)
     {
